@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql: mysql:8.0
+      env:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: trello
+        MYSQL_USER: trello
+        MYSQL_PASSWORD: trello
+        ports:
+          - 3310:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=30
+    steps:
+    - name: Checkout
+      users: actions/checkout@v4
+
+    - name: Setup PHP
+      users: shivammathur/setup-php@v2
+      with:
+        php-version: "8.3"
+        extensions: nbstring, intl, pdo_mysql
+        coverage: none
+
+    - name: Install dependencies
+      run: composer install --no-interaction --prefer-dist --no-progress
+
+    - name: Wait for mysql
+      run: |
+        for i in {1..30}; doc
+          mysqladmin ping -h 127.0.0.1 -uroot -proot && break
+          sleep 2
+        done
