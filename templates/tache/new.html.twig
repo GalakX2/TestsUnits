@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Nouvelle tâche</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.titre) }}
+        
+        {# Le texte du bouton doit être "Créer" car c'est ce qu'on cherche dans le test #}
+        <button type="submit">Créer</button>
+    {{ form_end(form) }}
+{% endblock %}
