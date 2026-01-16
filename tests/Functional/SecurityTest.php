@@ -8,7 +8,7 @@ final class SecurityTest extends WebTestCase
    public function testRedirection()
    {
     $client = static::createClient();
-    $client->request('GET','/tache');
+    $client->request('GET','/taches');
     $this->assertResponseRedirects('/login');
    }
    public function testInscriptionConnexion(){
@@ -23,7 +23,7 @@ final class SecurityTest extends WebTestCase
     $client->submit($from);
     $this->assertResponseRedirects();
     $client->followRedirect();
-    $client->request('GET', '/tache');
+    $client->request('GET', '/taches');
     $this->assertResponseIsSuccessful();
    }
 

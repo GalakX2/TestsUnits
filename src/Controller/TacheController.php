@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tache;
 use App\Form\TacheType;
-use App\Repository\TacheRepository; // <-- Import du Repository
+use App\Repository\TacheRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,21 +14,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TacheController extends AbstractController
 {
-    // On injecte le Repository dans la méthode
-    #[Route('/taches', name: 'app_tache_index')]
+    // --- CORRECTION ICI : Changement du nom de la route ---
+    // De 'app_tache_index' vers 'app_tache'
+    #[Route('/taches', name: 'app_tache')] 
     public function index(TacheRepository $tacheRepository): Response
     {
         return $this->render('tache/index.html.twig', [
-            'taches' => $tacheRepository->findAll(), // On récupère toutes les tâches
+            'taches' => $tacheRepository->findAll(),
         ]);
     }
 
-    // ... Le reste de ta méthode new() ne change pas ...
     #[Route('/taches/new', name: 'app_tache_new')]
     #[IsGranted('ROLE_USER')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // ... (Garde ton code qui fonctionne ici) ...
         $tache = new Tache();
         $form = $this->createForm(TacheType::class, $tache);
         $form->handleRequest($request);
@@ -40,7 +39,8 @@ class TacheController extends AbstractController
             $entityManager->persist($tache);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_tache_index');
+            // --- CORRECTION ICI : Mise à jour de la redirection ---
+            return $this->redirectToRoute('app_tache');
         }
 
         return $this->render('tache/new.html.twig', [
