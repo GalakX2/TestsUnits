@@ -14,8 +14,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TacheController extends AbstractController
 {
-    // --- CORRECTION ICI : Changement du nom de la route ---
-    // De 'app_tache_index' vers 'app_tache'
     #[Route('/taches', name: 'app_tache')] 
     public function index(TacheRepository $tacheRepository): Response
     {
@@ -39,7 +37,6 @@ class TacheController extends AbstractController
             $entityManager->persist($tache);
             $entityManager->flush();
 
-            // --- CORRECTION ICI : Mise à jour de la redirection ---
             return $this->redirectToRoute('app_tache');
         }
 
